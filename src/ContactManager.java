@@ -22,11 +22,11 @@ public class ContactManager {
             displayMainMenu();
             int choice = input.getInt(1, 5, "Please enter your choice.");
             switch (choice) {
-                case 1: // view contacts
-                case 2: // add contact
+                case 1: viewFormattedContacts(); break;
+                case 2: addContact(); break;
                 case 3: // search contacts
                 case 4: // delete contacts
-                default: exitNow = true;
+                default: exitNow = true; break;
             }
         }
         System.out.println("Thank you.  Have a great day.");
@@ -76,22 +76,34 @@ public class ContactManager {
     }
 
     public void displayMainMenu() {
-        System.out.println("1 - View contacts");
+        System.out.println("Main menu:");
+        System.out.println("1 - View contacts");// done
         System.out.println("2 - Add a contact");
         System.out.println("3 - Search contacts");
         System.out.println("4 - Delete a contact");
-        System.out.println("5 - Exit");
+        System.out.println("5 - Exit"); // done
         System.out.println();
     }
 
     public void viewFormattedContacts() {
-
+        System.out.println("Here are your contacts:");
+        System.out.println();
+        System.out.println("ID number | Name                | Phone Number |");
+        System.out.println("------------------------------------------------");
+        for (int i = 0 ; i < contacts.size(); i++) {
+            String[] parts = contacts.get(i).split(",");
+            System.out.printf("%-10d| %-20s| %-12s |%n", i, parts[0], parts[1]);
+        }
+        System.out.println();
     }
 
     public void addContact() {
-        //get input
-        //format it
-        //add it to contactList
+        String name = input.getString("Please enter the name.");
+        String number = input.getString("Please enter the number with no dashes.");
+        String finalContact = name + "," + number;
+        contacts.add(finalContact);
+        System.out.println(name + " has been added with number: " + number);
+        System.out.println();
     }
 
     public void searchForContact() {
