@@ -19,6 +19,8 @@ public class ContactManager {
     public void run() {
         readContactsFromFile();
         System.out.println(contacts);
+        contacts.add("David S, 2348903");
+        writeContactsToFile();
    /*
     psuedocode
 
