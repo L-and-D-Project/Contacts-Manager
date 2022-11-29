@@ -33,7 +33,7 @@ public class ContactManager {
     }
 
     public void writeContactsToFile() {
-
+// test
     }
 
     public void displayMainMenu() {
