@@ -18,29 +18,21 @@ public class ContactManager {
 
     public void run() {
         readContactsFromFile();
-        System.out.println(contacts);
-        contacts.add("David S, 2348903");
+        boolean exitNow = false;
+        while (!exitNow) {
+            displayMainMenu();
+            int choice = input.getInt(1, 5, "Please enter your choice.");
+            switch (choice) {
+                case 1: // view contacts
+                case 2: // add contact
+                case 3: // search contacts
+                case 4: // delete contacts
+                default: exitNow = true;
+            }
+        }
+        System.out.println("Thank you.  Have a great day.");
         writeContactsToFile();
-   /*
-    psuedocode
-
-    ------read contacts from file
-    exitNow = false
-       while (exitNow = false) {
-       display the menu
-       get choice
-       switch (choice)
-            1 - view contacts
-            2- add new contact
-            3 - search contacts
-            4 - delete contact
-            5 - exit; exitNow = true;
-       }
-    write contacts back to file
-
-     */
     }
-
 
     public boolean fileReady() {
         if (Files.notExists(dataDirectory)) {
@@ -85,7 +77,12 @@ public class ContactManager {
     }
 
     public void displayMainMenu() {
-
+        System.out.println("1 - View contacts");
+        System.out.println("2 - Add a contact");
+        System.out.println("3 - Search contacts");
+        System.out.println("4 - Delete a contact");
+        System.out.println("5 - Exit");
+        System.out.println();
     }
 
     public void getChoice () {
