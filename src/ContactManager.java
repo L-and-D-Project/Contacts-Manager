@@ -22,11 +22,21 @@ public class ContactManager {
             displayMainMenu();
             int choice = input.getInt(1, 5, "Please enter your choice.");
             switch (choice) {
-                case 1: viewFormattedContacts(); break;
-                case 2: addContact(); break;
-                case 3: searchForContact(); break;
-                case 4: deleteContact(); break;
-                default: exitNow = true; break;
+                case 1:
+                    viewFormattedContacts();
+                    break;
+                case 2:
+                    addContact();
+                    break;
+                case 3:
+                    searchForContact();
+                    break;
+                case 4:
+                    deleteContact();
+                    break;
+                default:
+                    exitNow = true;
+                    break;
             }
         }
         System.out.println("Thank you. Have a great day.");
@@ -37,8 +47,7 @@ public class ContactManager {
         if (Files.notExists(dataDirectory)) {
             try {
                 Files.createDirectories(dataDirectory);
-            }
-            catch(IOException e) {
+            } catch (IOException e) {
                 System.out.println("There was an error creating the directory.");
                 System.out.println(e.getMessage());
             }
@@ -46,8 +55,7 @@ public class ContactManager {
         if (Files.notExists(dataFile)) {
             try {
                 Files.createFile(dataFile);
-            }
-            catch(IOException e) {
+            } catch (IOException e) {
                 System.out.println("There was an error creating the file.");
                 System.out.println(e.getMessage());
             }
@@ -55,7 +63,7 @@ public class ContactManager {
         return true;
     }
 
-    public void readContactsFromFile () {
+    public void readContactsFromFile() {
         if (fileReady()) {
             try {
                 contacts = Files.readAllLines(dataFile);
@@ -88,11 +96,11 @@ public class ContactManager {
     }
 
     public String FormatPhoneNumber(String s) {
-       String formNum = "";
-       formNum += s.substring(0, 3)+ "-";
-       formNum += s.substring(3, 6) + "-";
-       formNum += s.substring(6, 10);
-       return formNum;
+        String formNum = "";
+        formNum += s.substring(0, 3) + "-";
+        formNum += s.substring(3, 6) + "-";
+        formNum += s.substring(6, 10);
+        return formNum;
     }
 
     public void viewFormattedContacts() {
@@ -100,28 +108,33 @@ public class ContactManager {
         System.out.println();
         System.out.println("ID number | Name                | Phone Number   |");
         System.out.println("--------------------------------------------------");
-        for (int i = 0 ; i < contacts.size(); i++) {
+        for (int i = 0; i < contacts.size(); i++) {
             String[] parts = contacts.get(i).split(",");
             System.out.printf("%-10d| %-20s| %-14s |%n", i, parts[0], FormatPhoneNumber(parts[1]));
         }
         System.out.println();
     }
-// still need overwrite HALF COMPLETE *****
+
     public void addContact() {
         boolean valid = false;
+        boolean overWrite = false;
         String name = "";
         int duplicateI = -1;
-        while(!valid) {
-
+        while (!valid) {
             name = input.getString("Please enter the name.");
-            if (checkDuplicate(name) != -1) {
-                valid = input.yesNo("There's already a contact named " + name + ". Do you want to overwrite it? (Yes/No)");
+            duplicateI = checkDuplicate(name);
+            if (duplicateI != -1) {
+                overWrite = input.yesNo("There's already a contact named " + name + ". Do you want to overwrite it? (Yes/No)");
+                valid = overWrite;
             } else {
-                duplicateI = true;
+                valid = true;
             }
         }
         String number = input.getString("Please enter the number with no dashes.");
         String finalContact = name + "," + number;
+        if (overWrite) {
+            contacts.remove(duplicateI);
+        }
         contacts.add(finalContact);
         System.out.println(name + " has been added with number: " + number);
         System.out.println();
@@ -131,7 +144,7 @@ public class ContactManager {
         String name = input.getString("Please enter the name you want to find.");
         boolean match = false;
         int which = 0;
-        for (int i = 0 ; i < contacts.size(); i++) {
+        for (int i = 0; i < contacts.size(); i++) {
             String[] parts = contacts.get(i).split(",");
             if (parts[0].equalsIgnoreCase(name)) {
                 match = true;
@@ -154,11 +167,10 @@ public class ContactManager {
 
     public int checkDuplicate(String name) {
         int which = -1;
-        for (int i = 0 ; i < contacts.size(); i++) {
+        for (int i = 0; i < contacts.size(); i++) {
             String[] parts = contacts.get(i).split(",");
             if (parts[0].equalsIgnoreCase(name)) {
                 which = i;
-
             }
         }
         return which;
