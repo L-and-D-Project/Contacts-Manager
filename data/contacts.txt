@@ -1,0 +1,7 @@
+Ada Lovelace,1234567890
+Alan Turing,8556874645
+Alonzo Church,6598625665
+Bill Gates,7015426951
+Bjarne Stroustrup,2215478546
+Charles Babbage,3254857415
+Claude Shannon,7548521563
