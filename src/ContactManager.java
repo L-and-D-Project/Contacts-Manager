@@ -87,20 +87,39 @@ public class ContactManager {
         System.out.println();
     }
 
+    public String FormatPhoneNumber(String s) {
+       String formNum = "";
+       formNum += s.substring(0, 3)+ "-";
+       formNum += s.substring(3, 6) + "-";
+       formNum += s.substring(6, 10);
+       return formNum;
+    }
+
     public void viewFormattedContacts() {
         System.out.println("Here are your contacts:");
         System.out.println();
-        System.out.println("ID number | Name                | Phone Number |");
-        System.out.println("------------------------------------------------");
+        System.out.println("ID number | Name                | Phone Number   |");
+        System.out.println("--------------------------------------------------");
         for (int i = 0 ; i < contacts.size(); i++) {
             String[] parts = contacts.get(i).split(",");
-            System.out.printf("%-10d| %-20s| %-12s |%n", i, parts[0], parts[1]);
+            System.out.printf("%-10d| %-20s| %-14s |%n", i, parts[0], FormatPhoneNumber(parts[1]));
         }
         System.out.println();
     }
-
+// still need overwrite HALF COMPLETE *****
     public void addContact() {
-        String name = input.getString("Please enter the name.");
+        boolean valid = false;
+        String name = "";
+        int duplicateI = -1;
+        while(!valid) {
+
+            name = input.getString("Please enter the name.");
+            if (checkDuplicate(name) != -1) {
+                valid = input.yesNo("There's already a contact named " + name + ". Do you want to overwrite it? (Yes/No)");
+            } else {
+                duplicateI = true;
+            }
+        }
         String number = input.getString("Please enter the number with no dashes.");
         String finalContact = name + "," + number;
         contacts.add(finalContact);
@@ -123,14 +142,26 @@ public class ContactManager {
             String[] parts = contacts.get(which).split(",");
             System.out.println("Here is your contact: ");
             System.out.println();
-            System.out.println("ID number | Name                | Phone Number |");
-            System.out.println("------------------------------------------------");
-            System.out.printf("%-10d| %-20s| %-12s |%n", which, parts[0], parts[1]);
+            System.out.println("ID number | Name                | Phone Number   |");
+            System.out.println("--------------------------------------------------");
+            System.out.printf("%-10d| %-20s| %-14s |%n", which, parts[0], FormatPhoneNumber(parts[1]));
             System.out.println();
         } else {
             System.out.println("That contact does not exist.");
             System.out.println();
         }
+    }
+
+    public int checkDuplicate(String name) {
+        int which = -1;
+        for (int i = 0 ; i < contacts.size(); i++) {
+            String[] parts = contacts.get(i).split(",");
+            if (parts[0].equalsIgnoreCase(name)) {
+                which = i;
+
+            }
+        }
+        return which;
     }
 
     public void deleteContact() {
