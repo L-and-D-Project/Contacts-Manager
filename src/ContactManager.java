@@ -24,19 +24,20 @@ public class ContactManager {
             switch (choice) {
                 case 1: viewFormattedContacts(); break;
                 case 2: addContact(); break;
-                case 3: // search contacts
-                case 4: // delete contacts
+                case 3: searchForContact(); break;
+                case 4: deleteContact(); break;
                 default: exitNow = true; break;
             }
         }
-        System.out.println("Thank you.  Have a great day.");
+        System.out.println("Thank you. Have a great day.");
         writeContactsToFile();
     }
 
     public boolean fileReady() {
         if (Files.notExists(dataDirectory)) {
             try {
-                Files.createDirectories(dataDirectory);            }
+                Files.createDirectories(dataDirectory);
+            }
             catch(IOException e) {
                 System.out.println("There was an error creating the directory.");
                 System.out.println(e.getMessage());
@@ -44,7 +45,8 @@ public class ContactManager {
         }
         if (Files.notExists(dataFile)) {
             try {
-                Files.createFile(dataFile);            }
+                Files.createFile(dataFile);
+            }
             catch(IOException e) {
                 System.out.println("There was an error creating the file.");
                 System.out.println(e.getMessage());
@@ -107,11 +109,36 @@ public class ContactManager {
     }
 
     public void searchForContact() {
-
+        String name = input.getString("Please enter the name you want to find.");
+        boolean match = false;
+        int which = 0;
+        for (int i = 0 ; i < contacts.size(); i++) {
+            String[] parts = contacts.get(i).split(",");
+            if (parts[0].equalsIgnoreCase(name)) {
+                match = true;
+                which = i;
+            }
+        }
+        if (match) {
+            String[] parts = contacts.get(which).split(",");
+            System.out.println("Here is your contact: ");
+            System.out.println();
+            System.out.println("ID number | Name                | Phone Number |");
+            System.out.println("------------------------------------------------");
+            System.out.printf("%-10d| %-20s| %-12s |%n", which, parts[0], parts[1]);
+            System.out.println();
+        } else {
+            System.out.println("That contact does not exist.");
+            System.out.println();
+        }
     }
 
     public void deleteContact() {
-
+        viewFormattedContacts();
+        int id = input.getInt(0, contacts.size(), "Please enter the ID of the contact you wish to delete.");
+        contacts.remove(id);
+        System.out.println("Contact #" + id + " has been removed.");
+        System.out.println();
     }
 
 }
