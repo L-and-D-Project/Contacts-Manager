@@ -1,6 +1,5 @@
 import util.Input;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -83,10 +82,6 @@ public class ContactManager {
         System.out.println("4 - Delete a contact");
         System.out.println("5 - Exit");
         System.out.println();
-    }
-
-    public void getChoice () {
-        // actually use something from input class
     }
 
     public void viewFormattedContacts() {
