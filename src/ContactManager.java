@@ -95,7 +95,7 @@ public class ContactManager {
         System.out.println();
     }
 
-    public String FormatPhoneNumber(String s) {
+    public String formatPhoneNumber(String s) {
         String formNum = "";
         formNum += s.substring(0, 3) + "-";
         formNum += s.substring(3, 6) + "-";
@@ -110,7 +110,7 @@ public class ContactManager {
         System.out.println("--------------------------------------------------");
         for (int i = 0; i < contacts.size(); i++) {
             String[] parts = contacts.get(i).split(",");
-            System.out.printf("%-10d| %-20s| %-14s |%n", i, parts[0], FormatPhoneNumber(parts[1]));
+            System.out.printf("%-10d| %-20s| %-14s |%n", i, parts[0], formatPhoneNumber(parts[1]));
         }
         System.out.println();
     }
@@ -157,7 +157,7 @@ public class ContactManager {
             System.out.println();
             System.out.println("ID number | Name                | Phone Number   |");
             System.out.println("--------------------------------------------------");
-            System.out.printf("%-10d| %-20s| %-14s |%n", which, parts[0], FormatPhoneNumber(parts[1]));
+            System.out.printf("%-10d| %-20s| %-14s |%n", which, parts[0], formatPhoneNumber(parts[1]));
             System.out.println();
         } else {
             System.out.println("That contact does not exist.");
