@@ -23,7 +23,7 @@ public class ContactManager {
             int choice = input.getInt(1, 5, "Please enter your choice.");
             switch (choice) {
                 case 1:
-                    viewFormattedContacts();
+                    viewFormattedContacts(false);
                     break;
                 case 2:
                     addContact();
@@ -43,7 +43,7 @@ public class ContactManager {
         writeContactsToFile();
     }
 
-    public boolean fileReady() {
+    private boolean fileReady() {
         if (Files.notExists(dataDirectory)) {
             try {
                 Files.createDirectories(dataDirectory);
@@ -63,7 +63,7 @@ public class ContactManager {
         return true;
     }
 
-    public void readContactsFromFile() {
+    private void readContactsFromFile() {
         if (fileReady()) {
             try {
                 contacts = Files.readAllLines(dataFile);
@@ -74,7 +74,7 @@ public class ContactManager {
         }
     }
 
-    public void writeContactsToFile() {
+    private void writeContactsToFile() {
         if (fileReady()) {
             try {
                 Files.write(dataFile, contacts);
@@ -85,7 +85,7 @@ public class ContactManager {
         }
     }
 
-    public void displayMainMenu() {
+    private void displayMainMenu() {
         System.out.println("Main menu:");
         System.out.println("1 - View contacts");// done
         System.out.println("2 - Add a contact");
@@ -95,7 +95,7 @@ public class ContactManager {
         System.out.println();
     }
 
-    public String formatPhoneNumber(String s) {
+    private String formatPhoneNumber(String s) {
         String formNum = "";
         formNum += s.substring(0, 3) + "-";
         formNum += s.substring(3, 6) + "-";
@@ -103,19 +103,28 @@ public class ContactManager {
         return formNum;
     }
 
-    public void viewFormattedContacts() {
+    private void viewFormattedContacts(boolean withIds) {
         System.out.println("Here are your contacts:");
         System.out.println();
-        System.out.println("ID number | Name                | Phone Number   |");
-        System.out.println("--------------------------------------------------");
-        for (int i = 0; i < contacts.size(); i++) {
-            String[] parts = contacts.get(i).split(",");
-            System.out.printf("%-10d| %-20s| %-14s |%n", i, parts[0], formatPhoneNumber(parts[1]));
+        if (withIds) {
+            System.out.println("ID number | Name                | Phone Number   |");
+            System.out.println("--------------------------------------------------");
+            for (int i = 0; i < contacts.size(); i++) {
+                String[] parts = contacts.get(i).split(",");
+                System.out.printf("%-10d| %-20s| %-14s |%n", i, parts[0], formatPhoneNumber(parts[1]));
+            }
+        } else {
+            System.out.println("Name                | Phone Number   |");
+            System.out.println("--------------------------------------");
+            for (int i = 0; i < contacts.size(); i++) {
+                String[] parts = contacts.get(i).split(",");
+                System.out.printf("%-20s| %-14s |%n", parts[0], formatPhoneNumber(parts[1]));
+            }
         }
         System.out.println();
     }
 
-    public void addContact() {
+    private void addContact() {
         boolean valid = false;
         boolean overWrite = false;
         String name = "";
@@ -140,7 +149,7 @@ public class ContactManager {
         System.out.println();
     }
 
-    public void searchForContact() {
+    private void searchForContact() {
         String name = input.getString("Please enter the name you want to find.");
         boolean match = false;
         int which = 0;
@@ -165,7 +174,7 @@ public class ContactManager {
         }
     }
 
-    public int checkDuplicate(String name) {
+    private int checkDuplicate(String name) {
         int which = -1;
         for (int i = 0; i < contacts.size(); i++) {
             String[] parts = contacts.get(i).split(",");
@@ -176,8 +185,8 @@ public class ContactManager {
         return which;
     }
 
-    public void deleteContact() {
-        viewFormattedContacts();
+    private void deleteContact() {
+        viewFormattedContacts(true);
         int id = input.getInt(0, contacts.size(), "Please enter the ID of the contact you wish to delete.");
         contacts.remove(id);
         System.out.println("Contact #" + id + " has been removed.");
